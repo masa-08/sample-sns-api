@@ -1,0 +1,60 @@
+#!/user/bin/env python
+# -*- coding:utf8 -*-
+
+from sqlalchemy import (create_engine, Column, ForeignKey, Integer, String,
+                        DATETIME)
+from sqlalchemy.orm import relation
+from sqlalchemy.ext.declarative import declarative_base
+from datetime import datetime
+
+Base = declarative_base()
+
+
+class UserFriend(Base):
+    __tablename__ = "users_friends"
+    user_id = Column("user_id", Integer, ForeignKey("users.id"),
+                     primary_key=True)
+    friend_id = Column("friend_id", Integer, ForeignKey("users.id"),
+                       primary_key=True)
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column("id", Integer, primary_key=True, nullable=False,
+                autoincrement=True)
+    user_id = Column("user_id", String(255), nullable=False, unique=True)
+    user_name = Column("user_name", String(255), nullable=False)
+    name = Column("name", String(255), nullable=False)
+    email = Column("email", String(255), nullable=False)
+    password = Column("password", String(255), nullable=False)
+    image = Column("image", String(255), default="")
+    created = Column("created", DATETIME, default=datetime.now, nullable=False)
+    modified = Column("modified", DATETIME, default=datetime.now,
+                      nullable=False)
+
+    diaries = relation("Diary", order_by="Diary.id", uselist=True,
+                       backref="users", cascade="all, delete, delete-orphan")
+
+    friends = relation("User", secondary="users_friends",
+                       primaryjoin=id == UserFriend.user_id,
+                       secondaryjoin=id == UserFriend.friend_id,
+                       backref="followers")
+
+
+class Diary(Base):
+    __tablename__ = "diaries"
+
+    id = Column("id", Integer, primary_key=True, nullable=False,
+                autoincrement=True)
+    diary_id = Column("diary_id", String(255), nullable=False, unique=True)
+    user_id = Column("user_id", Integer, ForeignKey("users.id"))
+    body = Column("body", String(255), nullable=False)
+    created = Column("created", DATETIME, default=datetime.now, nullable=False)
+    modified = Column("modified", DATETIME, default=datetime.now,
+                      nullable=False)
+
+
+if __name__ == "__main__":
+    engine = create_engine('sqlite:///sample.db', echo=True)
+    Base.metadata.create_all(engine)
