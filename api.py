@@ -1,7 +1,8 @@
 #!/user/bin/env python
 # -*- coding:utf8 -*-
 
-from flask import Flask, jsonify, request, url_for, abort, Response
+from flask import (Flask, jsonify, request, url_for, abort, Response,
+                   make_response)
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import User, Diary
@@ -26,7 +27,7 @@ def get_users():
     except User.DoesNotExist:
         abort(404)
 
-    return _make_response([user.serialize for user in users], 200)
+    return make_response(jsonify([user.serialize for user in users]))
 
 
 @app.route("/api/v1/users/<user_id>", methods=["GET"])
@@ -39,7 +40,7 @@ def get_user(user_id):
     except User.DoesNotExist:
         abort(404)
 
-    return _make_response(user.serialize, 200)
+    return make_response(jsonify(user.serialize))
 
 # GET
 # * ユーザ名に一致するユーザの情報を取得
@@ -69,7 +70,7 @@ def get_diaries():
     except Diary.DoesNotExist:
         abort(404)
 
-    return _make_response([diary.serialize for diary in diaries], 200)
+    return make_response(jsonify([diary.serialize for diary in diaries]))
 
 
 @app.route("/api/v1/diaries/<diary_id>", methods=["GET"])
@@ -82,7 +83,7 @@ def get_diary(diary_id):
     except Diary.DoesNotExist:
         abort(404)
 
-    return _make_response(diary.serialize, 200)
+    return make_response(jsonify(diary.serialize))
 
 
 @app.route("/api/v1/users/<user_id>/diaries", methods=["GET"])
@@ -98,7 +99,7 @@ def get_tweets_by_user_id(user_id):
     except User.DoesNotExist:
         abort(404)
 
-    return _make_response([diary.serialize for diary in diaries], 200)
+    return make_response(jsonify([diary.serialize for diary in diaries]))
 
 # PUSH
 # * あるユーザのツイートを登録
@@ -128,7 +129,7 @@ def get_friends(user_id):
     except User.DoesNotExist:
         abort(404)
 
-    return _make_response(friends, 200)
+    return make_response(jsonify(friends))
 
 
 @app.route("/api/v1/users/<user_id>/followers", methods=["GET"])
@@ -144,15 +145,7 @@ def get_followers(user_id):
     except User.DoesNotExist:
         abort(404)
 
-    return _make_response(followers, 200)
-
-
-# Used in each api method
-
-def _make_response(data, status_code):
-    response = jsonify(data)
-    response.status_code = status_code
-    return response
+    return make_response(jsonify(followers))
 
 
 if __name__ == "__main__":
