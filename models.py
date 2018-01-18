@@ -56,7 +56,8 @@ class User(Base):
                 "password": self.password,
                 "image": self.image,
                 "diaries": [diary.serialize for diary in self.diaries],
-                "friends": self._friends()}
+                "friends": self._friends(),
+                "followers": self._followers()}
 
     def _friends(self):
         return [{"id": friend.id,
@@ -67,6 +68,16 @@ class User(Base):
                  "password": friend.password,
                  "image": friend.image}
                 for friend in self.friends]
+
+    def _followers(self):
+        return [{"id": follower.id,
+                 "user_id": follower.user_id,
+                 "user_name": follower.user_name,
+                 "name": follower.name,
+                 "email": follower.email,
+                 "password": follower.password,
+                 "image": follower.image}
+                for follower in self.followers]
 
 
 class Diary(Base):
