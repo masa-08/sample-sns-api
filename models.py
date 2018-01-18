@@ -17,6 +17,11 @@ class UserFriend(Base):
     friend_id = Column("friend_id", Integer, ForeignKey("users.id"),
                        primary_key=True)
 
+    @property
+    def serialize(self):
+        return {"user_id": self.user_id,
+                "friend_id": self.friend_id}
+
 
 class User(Base):
     __tablename__ = "users"
@@ -41,6 +46,28 @@ class User(Base):
                        secondaryjoin=id == UserFriend.friend_id,
                        backref="followers")
 
+    @property
+    def serialize(self):
+        return {"id": self.id,
+                "user_id": self.user_id,
+                "user_name": self.user_name,
+                "name": self.name,
+                "email": self.email,
+                "password": self.password,
+                "image": self.image,
+                "diaries": [diary.serialize for diary in self.diaries],
+                "friends": self._friends()}
+
+    def _friends(self):
+        return [{"id": friend.id,
+                 "user_id": friend.user_id,
+                 "user_name": friend.user_name,
+                 "name": friend.name,
+                 "email": friend.email,
+                 "password": friend.password,
+                 "image": friend.image}
+                for friend in self.friends]
+
 
 class Diary(Base):
     __tablename__ = "diaries"
@@ -53,6 +80,13 @@ class Diary(Base):
     created = Column("created", DATETIME, default=datetime.now, nullable=False)
     modified = Column("modified", DATETIME, default=datetime.now,
                       nullable=False)
+
+    @property
+    def serialize(self):
+        return {"id": self.id,
+                "diary_id": self.diary_id,
+                "user_id": self.user_id,
+                "body": self.body}
 
 
 if __name__ == "__main__":
