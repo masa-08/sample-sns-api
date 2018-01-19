@@ -1,8 +1,7 @@
 #!/user/bin/env python
 # -*- coding:utf8 -*-
 
-from flask import (Flask, jsonify, request, url_for, abort, Response,
-                   make_response)
+from flask import Flask, jsonify, request, abort, make_response
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import User, Diary
@@ -61,12 +60,31 @@ def post_user():
 
     return make_response("", 201)
 
+
+@app.route("/api/v1/users/<user_id>", methods=["PUT"])
+def update_user(user_id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    json = request.json
+
+    try:
+        user = session.query(User).filter(User.user_id == user_id).one()
+        user.user_name = json["user_name"]
+        user.name = json["name"]
+        user.email = json["email"]
+        user.password = json["password"]
+        user.image = json["image"]
+
+        session.commit()
+    except User.DoesNotExist:
+        abort(400)
+
+    return make_response("", 204)
+
 # GET
 # * ユーザ名に一致するユーザの情報を取得
 #     * http://sample.com/api/v1/users?user_name={ユーザ名}
-# PUT
-# * user_idに一致するユーザのパラメータを変更する（ユーザ名、メールアドレス、パスワード、プロフィール画像のパスを変更許可）
-#     * http://sample.com/api/v1/users/{user_id}
 # DELETE
 # * user_idに一致するユーザを削除
 #     * http://sample.com/api/v1/users/{user_id}
@@ -134,9 +152,24 @@ def post_diary():
 
     return make_response("", 201)
 
-# PUT
-# * tweet_idに一致する投稿のパラメータを変更する（本文のみ変更許可？）
-#     * http://sample.com/api/v1/tweets/{tweet_id}
+
+@app.route("/api/v1/diaries/<diary_id>", methods=["PUT"])
+def update_diary(diary_id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    json = request.json
+
+    try:
+        diary = session.query(Diary).filter(Diary.diary_id == diary_id).one()
+        diary.body = json["body"]
+
+        session.commit()
+    except User.DoesNotExist:
+        abort(400)
+
+    return make_response("", 204)
+
 # DELETE
 # * tweet_idに一致する投稿を削除
 #     * http://sample.com/api/v1/tweets/{tweet_id}
