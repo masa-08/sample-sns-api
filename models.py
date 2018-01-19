@@ -86,7 +86,7 @@ class Diary(Base):
     id = Column("id", Integer, primary_key=True, nullable=False,
                 autoincrement=True)
     diary_id = Column("diary_id", String(255), nullable=False, unique=True)
-    user_id = Column("user_id", Integer, ForeignKey("users.id"))
+    user_id = Column("user_id", String(255), ForeignKey("users.user_id"))
     body = Column("body", String(255), nullable=False)
     created = Column("created", DATETIME, default=datetime.now, nullable=False)
     modified = Column("modified", DATETIME, default=datetime.now,
