@@ -82,12 +82,25 @@ def update_user(user_id):
 
     return make_response("", 204)
 
+
+@app.route("/api/v1/users/<user_id>", methods=["DELETE"])
+def delete_user(user_id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    try:
+        user = session.query(User).filter(User.user_id == user_id).one()
+
+        session.delete(user)
+        session.commit()
+    except User.DoesNotExist:
+        abort(400)
+
+    return make_response("", 204)
+
 # GET
 # * ユーザ名に一致するユーザの情報を取得
 #     * http://sample.com/api/v1/users?user_name={ユーザ名}
-# DELETE
-# * user_idに一致するユーザを削除
-#     * http://sample.com/api/v1/users/{user_id}
 
 
 ####################
@@ -170,9 +183,21 @@ def update_diary(diary_id):
 
     return make_response("", 204)
 
-# DELETE
-# * tweet_idに一致する投稿を削除
-#     * http://sample.com/api/v1/tweets/{tweet_id}
+
+@app.route("/api/v1/diaries/<diary_id>", methods=["DELETE"])
+def delete_diary(diary_id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    try:
+        diary = session.query(Diary).filter(Diary.diary_id == diary_id).one()
+
+        session.delete(diary)
+        session.commit()
+    except Diary.DoesNotExist:
+        abort(400)
+
+    return make_response("", 204)
 
 
 ##############################
