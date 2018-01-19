@@ -42,12 +42,28 @@ def get_user(user_id):
 
     return make_response(jsonify(user.serialize))
 
+
+@app.route("/api/v1/users", methods=["POST"])
+def post_user():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    json = request.json
+    user = User(user_id=json["user_id"], user_name=json["user_name"],
+                name=json["name"], email=json["email"],
+                password=json["password"])
+
+    try:
+        session.add(user)
+        session.commit()
+    except User.DoesNotExist:
+        abort(400)
+
+    return make_response("", 201)
+
 # GET
 # * ユーザ名に一致するユーザの情報を取得
 #     * http://sample.com/api/v1/users?user_name={ユーザ名}
-# PUSH
-# * あるユーザの情報を登録
-#     * http://sample.com/api/v1/users
 # PUT
 # * user_idに一致するユーザのパラメータを変更する（ユーザ名、メールアドレス、パスワード、プロフィール画像のパスを変更許可）
 #     * http://sample.com/api/v1/users/{user_id}
@@ -101,9 +117,23 @@ def get_tweets_by_user_id(user_id):
 
     return make_response(jsonify([diary.serialize for diary in diaries]))
 
-# PUSH
-# * あるユーザのツイートを登録
-#     * http://sample.com/api/v1/users/{user_id}/tweets
+
+@app.route("/api/v1/diaries", methods=["POST"])
+def post_diary():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    json = request.json
+    diary = Diary(diary_id=json["diary_id"], user_id=json["user_id"],
+                  body=json["body"])
+    try:
+        session.add(diary)
+        session.commit()
+    except User.DoesNotExist:
+        abort(400)
+
+    return make_response("", 201)
+
 # PUT
 # * tweet_idに一致する投稿のパラメータを変更する（本文のみ変更許可？）
 #     * http://sample.com/api/v1/tweets/{tweet_id}
