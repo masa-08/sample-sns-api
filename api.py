@@ -230,6 +230,44 @@ def get_friends(user_id):
     return make_response(jsonify(friends))
 
 
+@app.route("/api/v1/users/<user_id>/friends", methods=["POST"])
+def add_friend(user_id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    friend_id = request.json["friend_id"]
+
+    try:
+        user = session.query(User).filter(User.user_id == user_id).one()
+        friend = session.query(User).filter(User.user_id == friend_id).one()
+
+        if(friend.user_id not in [f.user_id for f in user.friends]):
+            user.friends.append(friend)
+            session.commit()
+    except User.DoesNotExist:
+        abort(404)
+
+    return make_response("", 201)
+
+
+@app.route("/api/v1/users/<user_id>/friends/<friend_id>", methods=["DELETE"])
+def delete_friend(user_id, friend_id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    try:
+        user = session.query(User).filter(User.user_id == user_id).one()
+        friend = session.query(User).filter(User.user_id == friend_id).one()
+
+        if(friend.user_id in [f.user_id for f in user.friends]):
+            user.friends.remove(friend)
+            session.commit()
+    except User.DoesNotExist:
+        abort(404)
+
+    return make_response("", 201)
+
+
 @app.route("/api/v1/users/<user_id>/followers/list", methods=["GET"])
 def get_followers(user_id):
     Session = sessionmaker(bind=engine)
@@ -244,6 +282,49 @@ def get_followers(user_id):
         abort(404)
 
     return make_response(jsonify(followers))
+
+
+@app.route("/api/v1/users/<user_id>/followers", methods=["POST"])
+def add_follower(user_id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    follower_id = request.json["follower_id"]
+
+    try:
+        user = session.query(User).filter(User.user_id == user_id).one()
+        follower = session.query(User)\
+                          .filter(User.user_id == follower_id)\
+                          .one()
+
+        if(follower.user_id not in [f.user_id for f in user.followers]):
+            user.followers.append(follower)
+            session.commit()
+    except User.DoesNotExist:
+        abort(404)
+
+    return make_response("", 201)
+
+
+@app.route("/api/v1/users/<user_id>/followers/<follower_id>",
+           methods=["DELETE"])
+def delete_follower(user_id, follower_id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    try:
+        user = session.query(User).filter(User.user_id == user_id).one()
+        follower = session.query(User)\
+                          .filter(User.user_id == follower_id)\
+                          .one()
+
+        if(follower.user_id in [f.user_id for f in user.followers]):
+            user.followers.remove(follower)
+            session.commit()
+    except User.DoesNotExist:
+        abort(404)
+
+    return make_response("", 201)
 
 
 if __name__ == "__main__":
