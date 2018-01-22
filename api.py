@@ -42,6 +42,20 @@ def get_user(user_id):
     return make_response(jsonify(user.serialize))
 
 
+@app.route("/api/v1/users", methods=["GET"])
+def get_user_by_user_name():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    try:
+        user_name = request.args.get("user_name")
+        user = session.query(User).filter(User.user_name == user_name).one()
+    except User.DoesNotExist:
+        abort(404)
+
+    return make_response(jsonify(user.serialize))
+
+
 @app.route("/api/v1/users", methods=["POST"])
 def post_user():
     Session = sessionmaker(bind=engine)
