@@ -265,7 +265,7 @@ def delete_friend(user_id, friend_id):
     except User.DoesNotExist:
         abort(404)
 
-    return make_response("", 201)
+    return make_response("", 204)
 
 
 @app.route("/api/v1/users/<user_id>/followers/list", methods=["GET"])
@@ -324,7 +324,7 @@ def delete_follower(user_id, follower_id):
     except User.DoesNotExist:
         abort(404)
 
-    return make_response("", 201)
+    return make_response("", 204)
 
 
 if __name__ == "__main__":
