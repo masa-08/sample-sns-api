@@ -4,6 +4,7 @@
 from flask import Flask, jsonify, request, abort, make_response
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
 from models import User, Diary
 
 app = Flask(__name__)
@@ -14,8 +15,6 @@ engine = create_engine('sqlite:///sample.db', echo=False)
 # APIs about user #
 ###################
 
-# TODO: exceptの条件を正しくする
-
 @app.route("/api/v1/users/list", methods=["GET"])
 def get_users():
     Session = sessionmaker(bind=engine)
@@ -23,7 +22,7 @@ def get_users():
 
     try:
         users = session.query(User).all()
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(404)
 
     return make_response(jsonify([user.serialize for user in users]))
@@ -36,7 +35,7 @@ def get_user(user_id):
 
     try:
         user = session.query(User).filter(User.user_id == user_id).one()
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(404)
 
     return make_response(jsonify(user.serialize))
@@ -50,7 +49,7 @@ def get_user_by_user_name():
     try:
         user_name = request.args.get("user_name")
         user = session.query(User).filter(User.user_name == user_name).one()
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(404)
 
     return make_response(jsonify(user.serialize))
@@ -69,7 +68,7 @@ def create_user():
     try:
         session.add(user)
         session.commit()
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(400)
 
     return make_response("", 201)
@@ -91,7 +90,7 @@ def update_user(user_id):
         user.image = json["image"]
 
         session.commit()
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(400)
 
     return make_response("", 204)
@@ -107,7 +106,7 @@ def delete_user(user_id):
 
         session.delete(user)
         session.commit()
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(400)
 
     return make_response("", 204)
@@ -153,7 +152,7 @@ def get_diaries_by_user_id(user_id):
                          .filter(User.user_id == user_id)\
                          .one()\
                          .diaries
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(404)
 
     return make_response(jsonify([diary.serialize for diary in diaries]))
@@ -170,7 +169,7 @@ def create_diary():
     try:
         session.add(diary)
         session.commit()
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(400)
 
     return make_response("", 201)
@@ -188,7 +187,7 @@ def update_diary(diary_id):
         diary.body = json["body"]
 
         session.commit()
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(400)
 
     return make_response("", 204)
@@ -224,7 +223,7 @@ def get_friends(user_id):
                          .filter(User.user_id == user_id)\
                          .one()\
                          .serialize["friends"]
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(404)
 
     return make_response(jsonify(friends))
@@ -244,8 +243,8 @@ def add_friend(user_id):
         if(friend.user_id not in [f.user_id for f in user.friends]):
             user.friends.append(friend)
             session.commit()
-    except User.DoesNotExist:
-        abort(404)
+    except SQLAlchemyError:
+        abort(400)
 
     return make_response("", 201)
 
@@ -262,8 +261,8 @@ def delete_friend(user_id, friend_id):
         if(friend.user_id in [f.user_id for f in user.friends]):
             user.friends.remove(friend)
             session.commit()
-    except User.DoesNotExist:
-        abort(404)
+    except SQLAlchemyError:
+        abort(400)
 
     return make_response("", 204)
 
@@ -278,7 +277,7 @@ def get_followers(user_id):
                            .filter(User.user_id == user_id)\
                            .one()\
                            .serialize["followers"]
-    except User.DoesNotExist:
+    except SQLAlchemyError:
         abort(404)
 
     return make_response(jsonify(followers))
@@ -300,8 +299,8 @@ def add_follower(user_id):
         if(follower.user_id not in [f.user_id for f in user.followers]):
             user.followers.append(follower)
             session.commit()
-    except User.DoesNotExist:
-        abort(404)
+    except SQLAlchemyError:
+        abort(400)
 
     return make_response("", 201)
 
@@ -321,8 +320,8 @@ def delete_follower(user_id, follower_id):
         if(follower.user_id in [f.user_id for f in user.followers]):
             user.followers.remove(follower)
             session.commit()
-    except User.DoesNotExist:
-        abort(404)
+    except SQLAlchemyError:
+        abort(400)
 
     return make_response("", 204)
 
