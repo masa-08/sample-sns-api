@@ -16,7 +16,7 @@ engine = create_engine('sqlite:///sample.db', echo=False)
 
 # TODO: exceptの条件を正しくする
 
-@app.route("/api/v1/users", methods=["GET"])
+@app.route("/api/v1/users/list", methods=["GET"])
 def get_users():
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -107,7 +107,7 @@ def delete_user(user_id):
 # APIs about diary #
 ####################
 
-@app.route("/api/v1/diaries", methods=["GET"])
+@app.route("/api/v1/diaries/list", methods=["GET"])
 def get_diaries():
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -133,7 +133,7 @@ def get_diary(diary_id):
     return make_response(jsonify(diary.serialize))
 
 
-@app.route("/api/v1/users/<user_id>/diaries", methods=["GET"])
+@app.route("/api/v1/users/<user_id>/diaries/list", methods=["GET"])
 def get_tweets_by_user_id(user_id):
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -204,7 +204,7 @@ def delete_diary(diary_id):
 # APIs about friend/follower #
 ##############################
 
-@app.route("/api/v1/users/<user_id>/friends", methods=["GET"])
+@app.route("/api/v1/users/<user_id>/friends/list", methods=["GET"])
 def get_friends(user_id):
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -220,7 +220,7 @@ def get_friends(user_id):
     return make_response(jsonify(friends))
 
 
-@app.route("/api/v1/users/<user_id>/followers", methods=["GET"])
+@app.route("/api/v1/users/<user_id>/followers/list", methods=["GET"])
 def get_followers(user_id):
     Session = sessionmaker(bind=engine)
     session = Session()
