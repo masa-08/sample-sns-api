@@ -57,7 +57,7 @@ def get_user_by_user_name():
 
 
 @app.route("/api/v1/users", methods=["POST"])
-def post_user():
+def create_user():
     Session = sessionmaker(bind=engine)
     session = Session()
 
@@ -112,10 +112,6 @@ def delete_user(user_id):
 
     return make_response("", 204)
 
-# GET
-# * ユーザ名に一致するユーザの情報を取得
-#     * http://sample.com/api/v1/users?user_name={ユーザ名}
-
 
 ####################
 # APIs about diary #
@@ -148,7 +144,7 @@ def get_diary(diary_id):
 
 
 @app.route("/api/v1/users/<user_id>/diaries/list", methods=["GET"])
-def get_tweets_by_user_id(user_id):
+def get_diaries_by_user_id(user_id):
     Session = sessionmaker(bind=engine)
     session = Session()
 
@@ -164,7 +160,7 @@ def get_tweets_by_user_id(user_id):
 
 
 @app.route("/api/v1/diaries", methods=["POST"])
-def post_diary():
+def create_diary():
     Session = sessionmaker(bind=engine)
     session = Session()
 
