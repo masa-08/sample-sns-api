@@ -1,0 +1,221 @@
+
+  body{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    position: relative;
+    right:0;
+  }
+
+  .clearfix{
+  content: ".";
+  display: block;
+  height: 0;
+  font-size:0;
+  clear: both;
+  visibility:hidden;
+  }
+
+  li{
+    list-style: none;
+    display: inline-block;
+  }
+
+  a{
+    color: black;
+    text-decoration: none;
+  }
+
+  section {
+    width: 100%;
+    height: 300px;
+    background: center center /cover no-repeat fixed;
+    background-size: cover;
+  }
+
+  #section1 {
+      background: url(../image/about-top1.jpg);
+      background-size: cover;
+  }
+
+  #section2 {
+    background-color: rgba(20,20,100,0.1);
+    height: 1200px;
+  }
+
+
+
+  /*-------------------------------header-------------------------------------*/
+
+  header{
+    position: fixed;
+    height: 60px;
+    width: 100%;
+    background-color: white;
+    z-index: 100;
+  }
+
+  #logo{
+    float: left;
+    margin-top: 20px;
+    margin-left: 180px;
+  }
+
+  .header-menu{
+    float: right;
+    margin: 0;
+    margin-right: 180px;
+  }
+
+
+
+  #search{
+    float: left;
+    margin-top: 18px;
+  }
+
+  #TOP{
+    margin-top: 20px;
+  }
+
+  #searchform4 {
+    width: 200px;
+    background: url(../image/input4.gif) left top no-repeat;
+    display: block;
+    height: 24px;
+    position: relative;
+  }
+
+  #keywords4  {
+      width: 156px;
+      position: absolute;
+      top: 1px;
+      left: 12px;
+      border: 1px solid #FFF;
+  }
+
+  #searchBtn4 {
+      position: absolute;
+      top: 4px;
+      left: 174px;
+  }
+
+  .header-menu li{
+    margin-right: 10px;
+  }
+
+  #tweet{
+    margin: 0;
+    margin-left: 30px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 20px;
+    float: right;
+    margin-top: 10px;
+  }
+
+  #tweet:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+    -webkit-transition: 0.3s ease-in-out;
+  -moz-transition: 0.3s ease-in-out;
+  -o-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  }
+
+  #search{
+    margin-right: 50px;
+  }
+
+  /*-----------------------------middle bar----------------------------------*/
+
+
+
+  #main-icon{
+    position: absolute;
+    background-image: url(../image/icon.jpg);
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+    background-repeat: no-repeat;
+    background-position:center;
+    background-size: cover;
+    top: 230px;
+    left: 180px;
+    z-index: 1;
+  }
+
+  #middle-bar{
+    margin: 0;
+    float: right;
+    height: 80px;
+    background-color: white;
+    width: 100%;
+  }
+
+  #main-m-list{
+    float: right;
+    margin-right: 180px;
+    margin-top: 20px;
+  }
+
+
+
+  .inner-m-list{
+    display: block;
+    text-align: center;
+  }
+
+  .inner-second{
+    text-align: center;
+    margin-top: 3px;
+
+  }
+
+  #middle-bar.m-list{
+    margin-left: 30px;
+  }
+
+  #profile{
+    margin: 0;
+    float: right;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 20px;
+    margin-left: 100px;
+  }
+
+  #profile:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+    -webkit-transition: 0.3s ease-in-out;
+  -moz-transition: 0.3s ease-in-out;
+  -o-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  }
+
+/*--------------------------main contents------------------------------------*/
+
+  #main-contents{
+    margin: 0;
+    margin-left: 320px;
+    margin-right: 180px;
+    height: 1000px;
+  }
+
+  #main-contents li{
+    display: block;
+    font-size: 30px;
+    margin-top: 40px;
+    padding:10px 0 10px 0;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: white;
+  }
+
+  p{
+    margin: 0;
+    padding: 0;
+  }
+
+  #main-contents li p{
+    margin-left: 30px;
+  }
