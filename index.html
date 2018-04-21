@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ひとことしみず</title>
+    <meta name="robots" content="noindex,nofollow,noarchive"/ >
+    <link rel="stylesheet" href="common/css/normalize.css">
+    <link rel="stylesheet" href="common/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="common/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <script src="common/js/jquery-3.2.1.min.js"></script>
+
+    <script>
+      $(document).scroll(function() {
+        $("#section1").css({
+          "background-position-y": (-$(this).scrollTop()/5)
+        })
+      });
+    </script>
+</head>
+
+<body>
+  <header>
+    <div id="logo">ひとことしみず</div>
+
+    <ul class="header-menu">
+      <li id="search">
+        <form name="searchform4" id="searchform4" method="get" action="#">
+        <input name="keywords4" id="keywords4" value="" type="text" />
+        <input type="image" src="common/image/btn4.gif" alt="検索" name="searchBtn4" id="searchBtn4" />
+        </form>
+      </li>
+
+      <li id="TOP">
+        <a href="index.html">TOP</a>
+      </li>
+      <li id="tweet">
+        <a href="">日記を投稿する</a>
+      </li>
+    </ul>
+  </header>
+
+  <div class="clearfix"></div>
+
+  <div id="contents">
+
+    <section id="section1"></section>
+
+    <section id="section2">
+
+      <div id="middle-bar">
+        <div id="main-icon"></div>
+
+        <ul id="main-m-list">
+          <li class="m-list">
+            <a href="">
+              <ul>
+                <li class="inner-m-list">日記数</li>
+                <li class="inner-m-list inner-second">0</li>
+              </ul>
+            </a>
+          </li>
+
+          <li class="m-list">
+            <a href="">
+              <ul>
+                <li class="inner-m-list inner-first">フォロー</li>
+                <li class="inner-m-list inner-second">0</li>
+              </ul>
+            </a>
+          </li>
+
+          <li class="m-list">
+            <a href="">
+              <ul>
+                <li class="inner-m-list">フォロワー</li>
+                <li class="inner-m-list inner-second">110</li>
+              </ul>
+            </a>
+          </li>
+
+          <li id="profile">
+            <a href="">
+              <span>アイコン画像を変更</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div id="main-contents">
+        <ul>
+          <li><p>今日は清水と焼肉に行った</p></li>
+          <li><p>今日はよく寝た</p></li>
+          <li><p>株で儲けた</p></li>
+          <li><p>漫画を読んだ</p></li>
+          <li><p>ピザを頼んだ</p></li>
+          <li><p>寝ていた</p></li>
+          <li><p>ボルダリングした</p></li>
+          <li><p>肺炎になった</p></li>
+        </ul>
+      </div>
+    </section>
+
+
+  </div>
+
+</body>
+
+
+</html>
